@@ -1,0 +1,56 @@
+# BEFORE flows
+OFPT_FEATURES_REPLY (OF1.3) (xid=0x2): dpid:0000000000000001
+n_tables:254, n_buffers:0
+capabilities: FLOW_STATS TABLE_STATS PORT_STATS GROUP_STATS QUEUE_STATS
+OFPST_PORT_DESC reply (OF1.3) (xid=0x3):
+ 1(s1-eth1): addr:26:4c:1c:bf:3a:8f
+     config:     0
+     state:      LIVE
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 2(s1-eth2): addr:6e:dd:95:3d:61:7d
+     config:     0
+     state:      LIVE
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 3(s1-eth3): addr:5e:d6:12:df:b0:12
+     config:     0
+     state:      LIVE
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ LOCAL(s1): addr:9a:60:49:0a:be:48
+     config:     PORT_DOWN
+     state:      LINK_DOWN
+     speed: 0 Mbps now, 0 Mbps max
+OFPT_GET_CONFIG_REPLY (OF1.3) (xid=0x5): frags=normal miss_send_len=0
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+
+--- 10.0.0.3 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+
+--- 10.0.0.3 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+# Adding flows...
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ cookie=0x0, duration=0.062s, table=0, n_packets=0, n_bytes=0, priority=100,in_port=2 actions=drop
+ cookie=0x0, duration=0.044s, table=0, n_packets=0, n_bytes=0, priority=100,in_port=1 actions=output:3
+ cookie=0x0, duration=0.026s, table=0, n_packets=0, n_bytes=0, priority=100,in_port=3 actions=output:1
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ cookie=0x0, duration=429.295s, table=0, n_packets=0, n_bytes=0, priority=0 actions=NORMAL
+ cookie=0x0, duration=0.018s, table=0, n_packets=0, n_bytes=0, actions=NORMAL
+# AFTER flows
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=0.301 ms
+
+--- 10.0.0.3 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.301/0.301/0.301/0.000 ms
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+
+--- 10.0.0.3 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
